@@ -3,7 +3,7 @@ import TDA.MatrizTDA;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Laberinto {
+public class Teseo {
 
     public void backLab(MatrizTDA<Casillero> laberinto, Posicion inicio, Posicion destino, int costoSolucion,
                         int mejorCosto, MatrizTDA<Casillero> solucion) {
