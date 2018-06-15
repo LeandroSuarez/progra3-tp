@@ -17,6 +17,6 @@ public class Casillero {
 
     @Override
     public String toString() {
-        return "["+ (visitado ? "V" : accesible ? "A" : "B") + "," + costo + ']';
+        return "( "+ (visitado ? "V" : accesible ? "A" : "B") + "," + costo + " )";
     }
 }
