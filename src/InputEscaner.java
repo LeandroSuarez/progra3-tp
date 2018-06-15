@@ -9,18 +9,20 @@ public class InputEscaner {
     private static final String DESTINO= "DESTINO";
 
     public String pedirRutaDeArchivo() {
-        System.out.println(MENSAJE_INPUT_ARCHIVO);
+        /*System.out.println(MENSAJE_INPUT_ARCHIVO);
         scanner = new Scanner(System.in);
-        String ruta = scanner.nextLine();
-        return System.getProperty("user.dir") + "/" + ruta + ".txt";
+        String ruta = scanner.nextLine();*/
+        return System.getProperty("user.dir") + "/" + "laberinto"/*ruta*/ + ".txt";
     }
 
     public Posicion pedirInputDeCasillerosInicio() {
-        return pedirInputDeCasilleros(INICIO);
+        //return pedirInputDeCasilleros(INICIO);
+        return new Posicion(0,0);
     }
 
     public Posicion pedirInputDeCasillerosDestino() {
-        return pedirInputDeCasilleros(DESTINO);
+        //return pedirInputDeCasilleros(DESTINO);
+        return new Posicion(1,1);
     }
 
     private Posicion pedirInputDeCasilleros(String tipoDeCasillero) {

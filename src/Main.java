@@ -15,12 +15,22 @@ public class Main {
             VectorTDA<Casillero> casilleros = importador.obtenerCasilleros(inputUsuario,
                     dimension.columnas * dimension.filas);
 
-            MatrizTDA<Casillero> laberinto = importador.generarLaberinto(casilleros, dimension);
+            MatrizTDA<Casillero> tablero = importador.generarLaberinto(casilleros, dimension);
+            Laberinto laberinto = new Laberinto(tablero, dimension);
+
+            MatrizTDA<Casillero> tableroSolucion = new Matriz<>();
 
             Posicion inicio = escaner.pedirInputDeCasillerosInicio();
             Posicion destino = escaner.pedirInputDeCasillerosDestino();
 
-            teseo.backLab(laberinto, inicio, destino, 0, 0, new Matriz<>());
+            teseo.backLab(laberinto, inicio, destino, 0, 0, tableroSolucion);
+
+            if (tableroSolucion.obtenerDimension() == 0) {
+                String msj = "No hay un camino valido desde la posicion (%s) hasta (%s)";
+                System.out.println(String.format(msj,inicio.toString(), destino.toString()));
+            } else {
+                System.out.println(Laberinto.representarTablero(tableroSolucion, dimension));
+            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

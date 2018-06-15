@@ -1,3 +1,5 @@
+import Implementaciones.Conjunto;
+import TDA.ConjuntoTDA;
 import TDA.MatrizTDA;
 
 import java.util.HashSet;
@@ -5,10 +7,10 @@ import java.util.Set;
 
 public class Teseo {
 
-    public void backLab(MatrizTDA<Casillero> laberinto, Posicion inicio, Posicion destino, int costoSolucion,
+    public void backLab(Laberinto laberinto, Posicion inicio, Posicion destino, int costoSolucion,
                         int mejorCosto, MatrizTDA<Casillero> solucion) {
 
-        int costoActual = laberinto.obtenerValor(inicio.x, inicio.y).costo;
+        int costoActual = laberinto.tablero.obtenerValor(inicio.x, inicio.y).costo;
 
         this.bloquearCasillero(inicio, laberinto);
         costoSolucion += costoActual;
@@ -16,17 +18,20 @@ public class Teseo {
         if (this.sonLaMismaPosicion(inicio, destino)) {
             if (costoSolucion > mejorCosto) {
                 mejorCosto = costoSolucion;
-                this.copiarMatriz(laberinto, solucion);
+                this.copiarMatriz(laberinto.tablero, solucion);
             }
         } else {
-            Set<Posicion> libres = this.buscarLibres(laberinto, inicio);
+            ConjuntoTDA<Posicion> libres = this.buscarLibres(laberinto, inicio);
 
-            if (!libres.isEmpty()) {
-                for (Posicion libre : libres) {
-                    backLab(laberinto, libre, destino, costoSolucion, mejorCosto, solucion);
-                }
+            while(!libres.conjuntoVacio()) {
+                Posicion libre = libres.elegir();
+
+                backLab(laberinto, libre, destino, costoSolucion, mejorCosto, solucion);
+
+                libres.sacar(libre);
             }
         }
+
 
         this.desbloquearCasillero(laberinto, inicio);
         costoSolucion -= costoActual;
@@ -36,8 +41,8 @@ public class Teseo {
         return p1.x == p2.x && p1.y == p2.y;
     }
 
-    private void bloquearCasillero(Posicion posicion, MatrizTDA<Casillero> tablero) {
-        Casillero casillero = tablero.obtenerValor(posicion.x, posicion.y);
+    private void bloquearCasillero(Posicion posicion, Laberinto laberinto) {
+        Casillero casillero = laberinto.tablero.obtenerValor(posicion.x, posicion.y);
         casillero.accesible = false;
     }
 
@@ -45,28 +50,37 @@ public class Teseo {
         m2.inicializarMatriz(m1.obtenerDimension());
     }
 
-    private Set<Posicion> buscarLibres(MatrizTDA<Casillero> tablero, Posicion posicion) {
+    private ConjuntoTDA<Posicion> buscarLibres(Laberinto laberinto, Posicion posicion) {
 
-        Set<Posicion> libres = new HashSet<>();
+        ConjuntoTDA<Posicion> libres = new Conjunto<>();
+        libres.inicializarConjunto();
 
-        Posicion arriba = new Posicion(posicion.x, posicion.y-1);
-        Posicion abajo = new Posicion(posicion.x, posicion.y+1);
-        Posicion izquierda = new Posicion(posicion.x-1, posicion.y);
-        Posicion derecha = new Posicion(posicion.x+1, posicion.y);
+        Posicion arriba = new Posicion(posicion.x-1, posicion.y);
+        Posicion abajo = new Posicion(posicion.x+1, posicion.y);
+        Posicion izquierda = new Posicion(posicion.x, posicion.y-1);
+        Posicion derecha = new Posicion(posicion.x, posicion.y+1);
 
-        if (this.esViable(tablero, arriba)) libres.add(arriba);
-        if (this.esViable(tablero, abajo)) libres.add(abajo);
-        if (this.esViable(tablero, izquierda)) libres.add(izquierda);
-        if (this.esViable(tablero, derecha)) libres.add(derecha);
+        if (this.esUnCasilleroValido(laberinto, arriba)) libres.agregar(arriba);
+        if (this.esUnCasilleroValido(laberinto, abajo)) libres.agregar(abajo);
+        if (this.esUnCasilleroValido(laberinto, izquierda)) libres.agregar(izquierda);
+        if (this.esUnCasilleroValido(laberinto, derecha)) libres.agregar(derecha);
 
         return libres;
     }
 
-    private boolean esViable(MatrizTDA<Casillero> tablero, Posicion posicion) {
-        return tablero.obtenerValor(posicion.x, posicion.y).accesible; /* && verificar limites matriz*/
+    private boolean esUnCasilleroValido(Laberinto laberinto, Posicion posicion) {
+        boolean dentroDeLosLimites = this.posicionValida(posicion, laberinto.dimension);
+        if (!dentroDeLosLimites) return false;
+        return laberinto.tablero.obtenerValor(posicion.x, posicion.y).accesible;
     }
 
-    private void desbloquearCasillero(MatrizTDA<Casillero> tablero, Posicion posicion) {
-        tablero.obtenerValor(posicion.x, posicion.y).accesible = true;
+    private boolean posicionValida(Posicion posicion, Dimension dimension) {
+        boolean validoEnX = posicion.x < dimension.filas && posicion.x > -1;
+        boolean validoEnY = posicion.y < dimension.columnas && posicion.y > -1;
+        return validoEnX && validoEnY;
+    }
+
+    private void desbloquearCasillero(Laberinto laberinto, Posicion posicion) {
+        laberinto.tablero.obtenerValor(posicion.x, posicion.y).accesible = true;
     }
 }
