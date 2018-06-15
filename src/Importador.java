@@ -26,7 +26,7 @@ public class Importador {
             reader = new BufferedReader(new FileReader(archivo));
 
             while((texto = reader.readLine()) != null) {
-                System.out.println(texto);
+                //System.out.println(texto);
                 return texto;
             }
         } finally {

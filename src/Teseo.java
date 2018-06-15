@@ -43,11 +43,21 @@ public class Teseo {
 
     private void bloquearCasillero(Posicion posicion, Laberinto laberinto) {
         Casillero casillero = laberinto.tablero.obtenerValor(posicion.x, posicion.y);
+        casillero.visitado = true;
         casillero.accesible = false;
     }
 
     private void copiarMatriz(MatrizTDA<Casillero> m1, MatrizTDA<Casillero> m2) {
-        m2.inicializarMatriz(m1.obtenerDimension());
+        int dim = m1.obtenerDimension();
+        m2.inicializarMatriz(dim);
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                Casillero casillero = m1.obtenerValor(i, j);
+                if (casillero == null) continue;
+                Casillero nuevoCasillero = new Casillero(casillero.costo, casillero.accesible, casillero.visitado);
+                m2.setearValor(i, j, nuevoCasillero);
+            }
+        }
     }
 
     private ConjuntoTDA<Posicion> buscarLibres(Laberinto laberinto, Posicion posicion) {
@@ -71,7 +81,8 @@ public class Teseo {
     private boolean esUnCasilleroValido(Laberinto laberinto, Posicion posicion) {
         boolean dentroDeLosLimites = this.posicionValida(posicion, laberinto.dimension);
         if (!dentroDeLosLimites) return false;
-        return laberinto.tablero.obtenerValor(posicion.x, posicion.y).accesible;
+        Casillero casillero = laberinto.tablero.obtenerValor(posicion.x, posicion.y);
+        return casillero.accesible && !casillero.visitado;
     }
 
     private boolean posicionValida(Posicion posicion, Dimension dimension) {
@@ -81,6 +92,8 @@ public class Teseo {
     }
 
     private void desbloquearCasillero(Laberinto laberinto, Posicion posicion) {
-        laberinto.tablero.obtenerValor(posicion.x, posicion.y).accesible = true;
+        Casillero casillero = laberinto.tablero.obtenerValor(posicion.x, posicion.y);
+        casillero.visitado = false;
+        casillero.accesible = true;
     }
 }
