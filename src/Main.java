@@ -2,6 +2,8 @@ import Implementaciones.Matriz;
 import TDA.MatrizTDA;
 import TDA.VectorTDA;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -29,7 +31,7 @@ public class Main {
 
             System.out.println("\n\nBuscando solución a través de BackTracking...");
 
-            buscadorDeCaminos.backLab(laberinto, inicio, destino, 0, 0, tableroSolucion);
+            buscadorDeCaminos.backLab(laberinto, inicio, destino, 0, new AtomicInteger(0), tableroSolucion);
 
             if (tableroSolucion.obtenerDimension() == 0) {
                 String msj = "No hay un camino valido desde la posicion (%s) hasta (%s)";

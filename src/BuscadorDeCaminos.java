@@ -1,10 +1,12 @@
 import TDA.ConjuntoTDA;
 import TDA.MatrizTDA;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class BuscadorDeCaminos {
 
     public void backLab(Laberinto laberinto, Posicion inicio, Posicion destino, int costoSolucion,
-                        int mejorCosto, MatrizTDA<Casillero> solucion) {
+                        AtomicInteger mejorCosto, MatrizTDA<Casillero> solucion) {
 
         int costoActual = laberinto.tablero.obtenerValor(inicio.x, inicio.y).costo;
 
@@ -13,8 +15,8 @@ public class BuscadorDeCaminos {
 
         if (UtilidadDeTablero.sonLaMismaPosicion(inicio, destino)) {
 
-            if (costoSolucion > mejorCosto) {
-                mejorCosto = costoSolucion;
+            if (costoSolucion > mejorCosto.get()) {
+                mejorCosto.set(costoSolucion);
                 UtilidadDeTablero.copiarTablero(laberinto.tablero, solucion);
             }
 
