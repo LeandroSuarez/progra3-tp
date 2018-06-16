@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class InputEscaner {
 
     private Scanner scanner;
-    private static final String MENSAJE_INPUT_CASILLEROS = "Por favor ingrese la posición del casillero de %s (separado por coma):";
-    private static final String MENSAJE_INPUT_ARCHIVO = "Por favor ingrese el archivo a leer:";
+    private static final String MENSAJE_INPUT_CASILLEROS = "Por favor ingrese la posición del casillero de %s (separado por coma, ej: 2,1):";
+    private static final String MENSAJE_INPUT_ARCHIVO = "Por favor ingrese la ruta completa del archivo a leer (para Windows agregue también la extensión):";
     private static final String INICIO= "INICIO";
     private static final String DESTINO= "DESTINO";
 

@@ -19,11 +19,12 @@ public class Main {
                     dimension.columnas * dimension.filas);
 
             MatrizTDA<Casillero> tablero = importador.generarLaberinto(casilleros, dimension);
+
             System.out.println("El tablero de entrada es el siguiente:");
+
             System.out.println(UtilidadDeTablero.representarTablero(tablero, dimension));
 
             Laberinto laberinto = new Laberinto(tablero, dimension);
-
             MatrizTDA<Casillero> tableroSolucion = new Matriz<>();
 
             Posicion inicio = escaner.pedirInputDeCasillerosInicio();
