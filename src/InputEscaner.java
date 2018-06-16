@@ -11,18 +11,15 @@ public class InputEscaner {
     public String pedirRutaDeArchivo() {
         System.out.println(MENSAJE_INPUT_ARCHIVO);
         scanner = new Scanner(System.in);
-        String ruta = scanner.nextLine();
-        return System.getProperty("user.dir") + "/" + ruta + ".txt";
+        return scanner.nextLine();
     }
 
     public Posicion pedirInputDeCasillerosInicio() {
         return pedirInputDeCasilleros(INICIO);
-        //return new Posicion(0,0);
     }
 
     public Posicion pedirInputDeCasillerosDestino() {
         return pedirInputDeCasilleros(DESTINO);
-        //return new Posicion(1,1);
     }
 
     private Posicion pedirInputDeCasilleros(String tipoDeCasillero) {
@@ -30,6 +27,7 @@ public class InputEscaner {
         System.out.println(String.format(MENSAJE_INPUT_CASILLEROS, tipoDeCasillero));
         String inputPos = scanner.nextLine();
         String[] posiciones = inputPos.split(",");
+        if (posiciones.length < 2) throw new RuntimeException("Error al ingresar posiciones de inicio y destino");
         return new Posicion(Integer.parseInt(posiciones[0]), Integer.parseInt(posiciones[1]));
     }
 

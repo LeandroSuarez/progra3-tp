@@ -10,10 +10,10 @@ public class Main {
             Importador importador = new Importador();
             InputEscaner escaner = new InputEscaner();
 
-            String inputUsuario = importador.leerArchivo(escaner.pedirRutaDeArchivo());
+            String inputTablero = importador.leerArchivo(escaner.pedirRutaDeArchivo());
 
-            Dimension dimension = importador.obtenerDimensiones(inputUsuario);
-            VectorTDA<Casillero> casilleros = importador.obtenerCasilleros(inputUsuario,
+            Dimension dimension = importador.obtenerDimensiones(inputTablero);
+            VectorTDA<Casillero> casilleros = importador.obtenerCasilleros(inputTablero,
                     dimension.columnas * dimension.filas);
 
             MatrizTDA<Casillero> tablero = importador.generarLaberinto(casilleros, dimension);
@@ -28,6 +28,7 @@ public class Main {
             Posicion destino = escaner.pedirInputDeCasillerosDestino();
 
             System.out.println("\n\nBuscando solución a través de BackTracking...");
+
             buscadorDeCaminos.backLab(laberinto, inicio, destino, 0, 0, tableroSolucion);
 
             if (tableroSolucion.obtenerDimension() == 0) {
